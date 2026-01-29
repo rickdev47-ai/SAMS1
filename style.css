@@ -1,0 +1,513 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body{
+    background-color: #f4f6f9;
+}
+
+/* ================= HEADER ================= */
+.Main-heading{
+    text-align: center;
+    background-color: rgb(0, 123, 255);
+    color: white;
+    padding: 18px;
+    font-size: 1.8rem;
+}
+
+/* ================= CARDS LAYOUT ================= */
+.cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    padding: 50px;
+    max-width: 1200px;
+    margin: 5% auto;
+}
+
+/* ================= CARD ================= */
+.card{
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* ================= CARD IMAGE ================= */
+.card-img{
+    height: 130px;
+    background-color: rgb(237, 243, 248);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-img img{
+    max-width: 75%;
+    max-height: 75%;
+    object-fit: contain;
+}
+
+/* ================= CARD TEXT ================= */
+.card-heading{
+    text-align: center;
+    font-size: 1.1rem;
+    margin-top: 12px;
+    color: #222;
+}
+
+.card-text{
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    padding: 8px 12px 16px;
+}
+
+
+/* ================== Footer ================= */
+
+footer{
+    background-color: rgb(0, 123, 255);
+    padding: 28px 10px;        /* responsive spacing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+footer p{
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+
+/* ================= STUDENT PAGE ================= */
+
+.students-container{
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* HEADER */
+.header{
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 18px;
+    /* font-size: 1.6rem; */
+}
+
+/* CARD */
+.students-card{
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.students-card h2{
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* FORM */
+.student-form{
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.student-form input{
+    flex: 1;
+    max-width: 250px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.student-form button{
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.student-form button:hover{
+    background-color: #0056b3;
+}
+
+/* FILTER */
+.filter-bar{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-bar select{
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+/* TABLE */
+.student-table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-table th,
+.student-table td{
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.student-table th{
+    background-color: #f1f1f1;
+}
+
+/* BUTTONS */
+.btn-edit{
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-delete{
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-edit:hover{
+    background-color: #117a8b;
+}
+
+.btn-delete:hover{
+    background-color: #b52a37;
+}
+
+/* FOOTER */
+.footer{
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px){
+    .student-form{
+        flex-direction: column;
+    }
+
+    .student-form input{
+        max-width: 100%;
+    }
+}
+
+
+/* ================= ATTENDANCE PAGE ================= */
+
+.attendance-container{
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* CARD */
+.attendance-card{
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.attendance-card h2{
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* FILTER SECTION */
+.attendance-filter{
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label{
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.filter-group input,
+.filter-group select{
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 180px;
+}
+
+/* BUTTON */
+.btn-primary{
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary:hover{
+    background-color: #0056b3;
+}
+
+/* TABLE */
+.attendance-table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td{
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.attendance-table th{
+    background-color: #f1f1f1;
+}
+
+/* RADIO BUTTONS */
+.attendance-table label{
+    margin-right: 15px;
+}
+
+/* SAVE BUTTON */
+.save-btn-wrapper{
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px){
+
+    .attendance-filter{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group input,
+    .filter-group select{
+        width: 100%;
+    }
+
+    .attendance-table th,
+    .attendance-table td{
+        font-size: 0.85rem;
+    }
+}
+
+
+/* ================= REPORT PAGE ================= */
+
+.report-container{
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* CARD */
+.report-card{
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.report-card h2{
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* FILTER */
+.report-filter{
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label{
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.filter-group select{
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 180px;
+}
+
+/* BUTTON */
+.btn-primary{
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary:hover{
+    background-color: #0056b3;
+}
+
+/* TABLE */
+.report-table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.report-table th,
+.report-table td{
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.report-table th{
+    background-color: #f1f1f1;
+}
+
+/* ATTENDANCE STATUS */
+.good{
+    color: green;
+    font-weight: 600;
+}
+
+.bad{
+    color: red;
+    font-weight: 600;
+}
+
+.low-attendance{
+    background-color: #fde2e2;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px){
+
+    .report-filter{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group select{
+        width: 100%;
+    }
+
+    .report-table th,
+    .report-table td{
+        font-size: 0.85rem;
+    }
+}
+
+
+/* ================= LOGIN PAGE ================= */
+
+.auth-container{
+    min-height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f6f9;
+    padding: 20px;
+}
+
+.auth-card{
+    background: #fff;
+    padding: 30px;
+    width: 100%;
+    max-width: 380px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.auth-card h2{
+    margin-bottom: 20px;
+}
+
+.auth-form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form input{
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+.auth-form input:focus{
+    outline: none;
+    border-color: #007bff;
+}
+
+.auth-text{
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.auth-text a{
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-text a:hover{
+    text-decoration: underline;
+}

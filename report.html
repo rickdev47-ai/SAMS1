@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Report | SAMS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1>Attendance Report</h1>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="report-container">
+
+        <!-- FILTER CARD -->
+        <section class="report-card">
+            <h2>Filters</h2>
+
+            <div class="report-filter">
+                <div class="filter-group">
+                    <label for="reportClass">Select Class:</label>
+                    <select id="reportClass">
+                        <option>All Classes</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" onclick="generateReport()">
+                    Generate Report
+                </button>
+            </div>
+        </section>
+
+        <!-- REPORT TABLE -->
+        <section class="report-card">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Name</th>
+                        <th>Total Days</th>
+                        <th>Present Days</th>
+                        <th>Attendance %</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    <!-- JS will insert rows here -->
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+      <footer>
+        <p>&copy; SAMP | ALL RIGHTS RESERVED | 2026-27</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="logic.js"></script>
+    <script>
+        populateReportClasses();
+    </script>
+
+</body>
+</html>

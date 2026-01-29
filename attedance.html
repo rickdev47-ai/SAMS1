@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance | SAMS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1>
+            Mark Attendance
+        </h1>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="attendance-container">
+
+        <!-- FILTER CARD -->
+        <section class="attendance-card">
+            <h2>Mark Attendance</h2>
+
+            <div class="attendance-filter">
+                <div class="filter-group">
+                    <label>Select Date:</label>
+                    <input type="date" id="attendanceDate">
+                </div>
+
+                <div class="filter-group">
+                    <label>Select Class:</label>
+
+                    <select id="attendanceClass">
+                        <option>All Classes</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" onclick="loadStudentsForAttendance()">Load Students</button>
+            </div>
+        </section>
+
+        <!-- ATTENDANCE TABLE CARD -->
+        <section class="attendance-card">
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Name</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceTableBody">
+                    <tr>
+                        <td>101</td>
+                        <td>Rahul</td>
+                        <td>
+                            <label>
+                                <input type="radio" name="att1" checked> Present
+                            </label>
+                            <label>
+                                <input type="radio" name="att1"> Absent
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>102</td>
+                        <td>Priya</td>
+                        <td>
+                            <label>
+                                <input type="radio" name="att2" checked> Present
+                            </label>
+                            <label>
+                                <input type="radio" name="att2"> Absent
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>103</td>
+                        <td>Amit</td>
+                        <td>
+                            <label>
+                                <input type="radio" name="att3" checked> Present
+                            </label>
+                            <label>
+                                <input type="radio" name="att3"> Absent
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="save-btn-wrapper">
+                <button class="btn-primary" onclick="saveAttendance()">Save Attendance</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; SAMP | ALL RIGHTS RESERVED | 2026-27</p>
+    </footer>
+
+    <script src="logic.js"></script>
+    <script>
+        populateAttendanceClasses();
+    </script>
+
+</body>
+
+</html>

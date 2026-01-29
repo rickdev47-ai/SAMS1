@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SAMS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 class="Main-heading"> Student Attendance Management System </h1>
+
+  <section class="cards">
+
+    <!-- Manage Students -->
+    <div class="card" onclick="location.href='student.html'">
+        <div class="card-img">
+            <img src="img/card-img/student.png" alt="">
+        </div>
+        <h3 class="card-heading">Manage Student</h3>
+        <p class="card-text">Add, Edit or View Student</p>
+    </div>
+
+    <!-- Mark Attendance -->
+    <div class="card" onclick="location.href='attedance.html'">
+        <div class="card-img">
+            <img src="img/card-img/attedance.png" alt="">
+        </div>
+        <h3 class="card-heading">Mark Attendance</h3>
+        <p class="card-text">Take daily Attendance</p>
+    </div>
+
+    <!-- View Report -->
+    <div class="card" onclick="location.href='report.html'">
+        <div class="card-img">
+            <img src="img/card-img/report.png" alt="">
+        </div>
+        <h3 class="card-heading">View Report</h3>
+        <p class="card-text">Check Attendance Report</p>
+    </div>
+
+    <!-- Logout -->
+    <div class="card logout-card" onclick="logoutUser()">
+        <div class="card-img">
+            <img src="img/card-img/logout.png" alt="Logout">
+        </div>
+        <h3 class="card-heading">Logout</h3>
+        <p class="card-text">Sign Out of the System</p>
+    </div>
+
+</section>
+
+
+
+    <footer>
+        <p>&copy; SAMP | ALL RIGHTS RESERVED | 2026-27</p>
+    </footer>
+<script src="logic.js"></script>
+</body>
+
+</html>

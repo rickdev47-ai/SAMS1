@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students | SAMS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1>Manage Students</h1>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="students-container">
+
+        <!-- ADD STUDENT CARD -->
+        <section class="students-card">
+            <h2>Add New Student</h2>
+            <form class="student-form">
+                <input type="text" id="studentName" placeholder="Student Name">
+                <input type="text" id="rollNo" placeholder="Roll No">
+                <input type="text" id="studentClass" placeholder="Class / Section">
+                <button type="button" onclick="addStudent()">Add Student</button>
+            </form>
+        </section>
+
+        <!-- STUDENT LIST CARD -->
+        <section class="students-card">
+            <div class="filter-bar">
+                <label for="classFilter">Filter by Class:</label>
+                <select id="classFilter" onchange="filterStudents()">
+                    <option>All Classes</option>
+                    <option>10 - A</option>
+                    <option>10 - B</option>
+                    <option>9 - A</option>
+                    <option>9 - B</option>
+                </select>
+            </div>
+
+            <table class="student-table" id="studentTable">
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>101</td>
+                        <td>Rahul</td>
+                        <td>10 - A</td>
+                        <td>
+                            <button class="btn-edit" onclick="editStudent(this)">Edit</button>
+                            <button class="btn-delete" onclick="deleteStudent(this)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>102</td>
+                        <td>Amit</td>
+                        <td>9 - B</td>
+                        <td>
+                            <button class="btn-edit" onclick="editStudent(this)">Edit</button>
+                            <button class="btn-delete" onclick="deleteStudent(this)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+     <footer>
+        <p>&copy; SAMP | ALL RIGHTS RESERVED | 2026-27</p>
+    </footer>
+
+    <script src="logic.js"></script>
+
+</body>
+
+</html>
