@@ -33,9 +33,10 @@
                 <div class="filter-group">
                     <label>Select Class:</label>
 
-                    <select id="attendanceClass">
-                        <option>All Classes</option>
+                    <select id="attendanceClass" onchange="loadStudentsForAttendance()">
+                        <option value="">Select Class</option>
                     </select>
+
                 </div>
 
                 <button class="btn-primary" onclick="loadStudentsForAttendance()">Load Students</button>

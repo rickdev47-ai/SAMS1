@@ -1,313 +1,210 @@
+const API = "https://sams1-backend.onrender.com";
+
+/* ================= PAGE LOAD ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("studentTable")) loadStudents();
+    if (document.getElementById("attendanceClass")) populateAttendanceClasses();
+    if (document.getElementById("reportClass")) populateReportClasses();
+});
+
 /* ================= LOGIN ================= */
 
 function loginUser() {
     const username = document.getElementById("username")?.value.trim();
     const password = document.getElementById("password")?.value.trim();
 
-    const dummyUser = "admin";
-    const dummyPass = "admin123";
-
-    if (!username || !password) {
-        alert("Please enter username and password");
-        return;
-    }
-
-    if (username === dummyUser && password === dummyPass) {
-        alert("Login successful");
-        window.location.href = "dashboard.html";
-    } else {
-        alert("Invalid username or password");
-    }
+    fetch(`${API}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) window.location.href = "dashboard.html";
+        else alert("Invalid username or password");
+    })
+    .catch(() => alert("Server not responding"));
 }
 
 /* ================= STUDENTS ================= */
 
+function loadStudents() {
+    fetch(`${API}/students`)
+        .then(res => res.json())
+        .then(renderStudents)
+        .catch(() => alert("Failed to load students"));
+}
+
 function addStudent() {
-    const name = document.getElementById("studentName").value.trim();
-    const roll = document.getElementById("rollNo").value.trim();
-    const cls  = document.getElementById("studentClass").value.trim();
+    const roll = rollNo.value.trim();
+    const name = studentName.value.trim();
+    const cls  = studentClass.value.trim();
 
-    if (!name || !roll || !cls) {
-        alert("Please fill all fields");
-        return;
-    }
+    if (!roll || !name || !cls) return alert("Fill all fields");
 
-    const table = document.getElementById("studentTable");
-    const tbody = table.querySelector("tbody");
-
-    const row = tbody.insertRow();
-    row.innerHTML = `
-        <td>${roll}</td>
-        <td>${name}</td>
-        <td>${cls}</td>
-        <td>
-            <button class="btn-edit" onclick="editStudent(this)">Edit</button>
-            <button class="btn-delete" onclick="deleteStudent(this)">Delete</button>
-        </td>
-    `;
-
-    updateClassDropdown(cls);
-    saveStudentsToLocalStorage();
-
-    document.getElementById("studentName").value = "";
-    document.getElementById("rollNo").value = "";
-    document.getElementById("studentClass").value = "";
+    fetch(`${API}/students`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roll, name, className: cls })
+    })
+    .then(res => res.json())
+    .then(d => {
+        if (!d.success) return alert(d.message || "Error");
+        loadStudents();
+        rollNo.value = studentName.value = studentClass.value = "";
+    });
 }
 
-function deleteStudent(btn) {
-    if (confirm("Delete this student?")) {
-        btn.closest("tr").remove();
-        saveStudentsToLocalStorage();
-    }
+function deleteStudent(roll) {
+    if (!confirm("Delete student?")) return;
+    fetch(`${API}/students/${roll}`, { method: "DELETE" })
+        .then(loadStudents);
 }
 
-function editStudent(btn) {
-    const row = btn.closest("tr");
+function editStudent(roll, oldName, oldClass) {
+    const name = prompt("Edit name:", oldName);
+    if (!name) return;
+    const cls = prompt("Edit class:", oldClass);
+    if (!cls) return;
 
-    const currentName = row.cells[1].innerText;
-    const currentClass = row.cells[2].innerText;
-
-    const newName = prompt("Edit Student Name:", currentName);
-    const newClass = prompt("Edit Class / Section:", currentClass);
-
-    if (newName && newName.trim() !== "") {
-        row.cells[1].innerText = newName;
-    }
-
-    if (newClass && newClass.trim() !== "") {
-        row.cells[2].innerText = newClass;
-        updateClassDropdown(newClass);
-    }
-
-    saveStudentsToLocalStorage();
+    fetch(`${API}/students/${roll}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, className: cls })
+    }).then(loadStudents);
 }
 
-/* ================= STUDENT FILTER ================= */
+function renderStudents(students) {
+    const tbody = document.querySelector("#studentTable tbody");
+    tbody.innerHTML = "";
+
+    students.forEach(s => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${s.roll}</td>
+                <td>${s.name}</td>
+                <td>${s.class}</td>
+                <td>
+                    <button onclick="editStudent('${s.roll}','${s.name}','${s.class}')">Edit</button>
+                    <button onclick="deleteStudent('${s.roll}')">Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    populateClassDropdown(students);
+}
+
+/* ================= FILTER ================= */
+
+function populateClassDropdown(students) {
+    const d = document.getElementById("classFilter");
+    if (!d) return;
+    d.innerHTML = `<option>All Classes</option>`;
+    [...new Set(students.map(s => s.class))].forEach(c => d.innerHTML += `<option>${c}</option>`);
+}
 
 function filterStudents() {
-    const selectedClass = document.getElementById("classFilter").value;
-    const rows = document.querySelectorAll("#studentTable tbody tr");
-
-    rows.forEach(row => {
-        const studentClass = row.cells[2].innerText;
-        row.style.display =
-            selectedClass === "All Classes" || studentClass === selectedClass
-                ? ""
-                : "none";
+    const val = classFilter.value;
+    document.querySelectorAll("#studentTable tbody tr").forEach(r => {
+        r.style.display = val === "All Classes" || r.cells[2].innerText === val ? "" : "none";
     });
-}
-
-function updateClassDropdown(newClass) {
-    const dropdown = document.getElementById("classFilter");
-    if (!dropdown) return;
-
-    const options = Array.from(dropdown.options).map(opt => opt.value);
-    if (!options.includes(newClass)) {
-        const option = document.createElement("option");
-        option.value = newClass;
-        option.textContent = newClass;
-        dropdown.appendChild(option);
-    }
-}
-
-/* ================= LOCAL STORAGE (STUDENTS) ================= */
-
-function saveStudentsToLocalStorage() {
-    const rows = document.querySelectorAll("#studentTable tbody tr");
-    const students = [];
-
-    rows.forEach(row => {
-        students.push({
-            roll: row.cells[0].innerText,
-            name: row.cells[1].innerText,
-            class: row.cells[2].innerText
-        });
-    });
-
-    localStorage.setItem("students", JSON.stringify(students));
 }
 
 /* ================= ATTENDANCE ================= */
 
-// Load students from localStorage
-function loadStudentsForAttendance() {
-    const cls = document.getElementById("attendanceClass").value;
-    const tbody = document.getElementById("attendanceTableBody");
-
-    tbody.innerHTML = "";
-
-    const students = JSON.parse(localStorage.getItem("students")) || [];
-
-    const filteredStudents = students.filter(
-        s => cls === "All Classes" || s.class === cls
-    );
-
-    if (filteredStudents.length === 0) {
-        alert("No students found for this class");
-        return;
-    }
-
-    filteredStudents.forEach(student => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${student.roll}</td>
-            <td>${student.name}</td>
-            <td>
-                <label>
-                    <input type="radio" name="att_${student.roll}" value="Present" checked>
-                    Present
-                </label>
-                <label style="margin-left:10px;">
-                    <input type="radio" name="att_${student.roll}" value="Absent">
-                    Absent
-                </label>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
+function populateAttendanceClasses() {
+    fetch(`${API}/students`)
+        .then(r => r.json())
+        .then(students => {
+            attendanceClass.innerHTML = `<option value="">Select Class</option>`;
+            [...new Set(students.map(s => s.class))].forEach(c =>
+                attendanceClass.innerHTML += `<option>${c}</option>`
+            );
+        });
 }
 
-// Save attendance to localStorage
+function loadStudentsForAttendance() {
+    const cls = attendanceClass.value;
+    attendanceTableBody.innerHTML = "";
+    if (!cls) return;
+
+    fetch(`${API}/students`)
+        .then(r => r.json())
+        .then(students => {
+            students.filter(s => s.class === cls).forEach(s => {
+                attendanceTableBody.innerHTML += `
+                    <tr>
+                        <td>${s.roll}</td>
+                        <td>${s.name}</td>
+                        <td>
+                            <input type="radio" name="att_${s.roll}" value="Present" checked> Present
+                            <input type="radio" name="att_${s.roll}" value="Absent"> Absent
+                        </td>
+                    </tr>`;
+            });
+        });
+}
+
 function saveAttendance() {
-    const date = document.getElementById("attendanceDate").value;
-    const cls = document.getElementById("attendanceClass").value;
+    const date = attendanceDate.value;
+    const cls = attendanceClass.value;
+    if (!date || !cls) return alert("Select date & class");
 
-    if (!date) {
-        alert("Please select a date");
-        return;
-    }
-
-    const rows = document.querySelectorAll("#attendanceTableBody tr");
-    const attendanceData = [];
-
-    rows.forEach(row => {
-        const roll = row.cells[0].innerText;
-        const name = row.cells[1].innerText;
-        const status = row.querySelector("input[type='radio']:checked").value;
-
-        attendanceData.push({
-            roll,
-            name,
-            class: cls,
-            status
+    const records = [];
+    document.querySelectorAll("#attendanceTableBody tr").forEach(r => {
+        records.push({
+            roll: r.cells[0].innerText,
+            status: r.querySelector("input:checked").value
         });
     });
 
-    const key = `attendance_${date}_${cls}`;
-    localStorage.setItem(key, JSON.stringify(attendanceData));
-
-    alert("Attendance saved successfully");
+    fetch(`${API}/attendance`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date, className: cls, records })
+    })
+    .then(r => r.json())
+    .then(d => alert(d.success ? "Attendance saved" : "Error"));
 }
-function populateAttendanceClasses() {
-    const dropdown = document.getElementById("attendanceClass");
-    if (!dropdown) return;
-
-    dropdown.innerHTML = `<option>All Classes</option>`;
-
-    const students = JSON.parse(localStorage.getItem("students")) || [];
-    const classes = [...new Set(students.map(s => s.class))];
-
-    classes.forEach(cls => {
-        const option = document.createElement("option");
-        option.value = cls;
-        option.textContent = cls;
-        dropdown.appendChild(option);
-    });
-}
-
 
 /* ================= REPORT ================= */
 
-// Populate class dropdown (same logic as attendance)
 function populateReportClasses() {
-    const dropdown = document.getElementById("reportClass");
-    if (!dropdown) return;
-
-    dropdown.innerHTML = `<option>All Classes</option>`;
-
-    const students = JSON.parse(localStorage.getItem("students")) || [];
-    const classes = [...new Set(students.map(s => s.class))];
-
-    classes.forEach(cls => {
-        const option = document.createElement("option");
-        option.value = cls;
-        option.textContent = cls;
-        dropdown.appendChild(option);
-    });
+    fetch(`${API}/students`)
+        .then(r => r.json())
+        .then(students => {
+            reportClass.innerHTML = `<option>All Classes</option>`;
+            [...new Set(students.map(s => s.class))].forEach(c =>
+                reportClass.innerHTML += `<option>${c}</option>`
+            );
+        });
 }
 
-// Generate attendance report
 function generateReport() {
-    const selectedClass = document.getElementById("reportClass").value;
-    const tbody = document.getElementById("reportTableBody");
+    const cls = reportClass.value;
+    reportTableBody.innerHTML = "";
 
-    tbody.innerHTML = "";
-
-    const reportData = {};
-    
-    // loop through localStorage keys
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-
-        if (!key.startsWith("attendance_")) continue;
-
-        const [, date, cls] = key.split("_");
-        if (selectedClass !== "All Classes" && cls !== selectedClass) continue;
-
-        const records = JSON.parse(localStorage.getItem(key));
-
-        records.forEach(rec => {
-            if (!reportData[rec.roll]) {
-                reportData[rec.roll] = {
-                    roll: rec.roll,
-                    name: rec.name,
-                    class: rec.class,
-                    total: 0,
-                    present: 0
-                };
-            }
-
-            reportData[rec.roll].total++;
-            if (rec.status === "Present") {
-                reportData[rec.roll].present++;
-            }
+    fetch(`${API}/report?className=${encodeURIComponent(cls)}`)
+        .then(r => r.json())
+        .then(data => {
+            if (!data.length) return alert("No data");
+            data.forEach(r => {
+                reportTableBody.innerHTML += `
+                    <tr>
+                        <td>${r.roll}</td>
+                        <td>${r.name || ""}</td>
+                        <td>${r.total}</td>
+                        <td>${r.present}</td>
+                        <td>${r.percentage}%</td>
+                    </tr>`;
+            });
         });
-    }
-
-    const values = Object.values(reportData);
-
-    if (values.length === 0) {
-        alert("No attendance data found");
-        return;
-    }
-
-    values.forEach(student => {
-        const percentage = ((student.present / student.total) * 100).toFixed(2);
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${student.roll}</td>
-            <td>${student.name}</td>
-            <td>${student.total}</td>
-            <td>${student.present}</td>
-            <td style="color:${percentage < 75 ? 'red' : 'green'}">
-                ${percentage}%
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
 }
 
 /* ================= LOGOUT ================= */
 
 function logoutUser() {
-    const confirmLogout = confirm("Are you sure you want to logout?");
-
-    if (confirmLogout) {
-        // OPTIONAL: clear session-related data only
-        // localStorage.removeItem("loggedInUser");
-
-        alert("Logged out successfully");
-        window.location.href = "index.html";
-    }
+    if (confirm("Logout?")) location.href = "index.html";
 }
